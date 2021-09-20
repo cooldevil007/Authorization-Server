@@ -9,14 +9,19 @@ var _ = require("underscore");
 const { Console } = require("console");
 _.string = require("underscore.string");
 
+const ejs = require('ejs');
+
 var app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.engine("html", cons.underscore);
-app.set("view engine", "html");
-app.set("views", "authorizationServer");
+//app.set("view engine", "html");
+// For EJS file
+app.set("view engine", "ejs");
+// For EJS file
+//app.set("views", "authorizationServer");
 app.set("json spaces", 4);
 
 var authServer = {
@@ -36,6 +41,7 @@ var requests = {};
 var redirect_url = {};
 var state_data = {};
 var client_data = {};
+var scope_data = {}
 
 /*
 app.get('/', function(req, res) {
@@ -53,6 +59,7 @@ app.get("/authorize", (req, res) => {
 
     // scope data from request
     scope_data = req.query.scope ? req.query.scope.split(" ") : undefined;
+    console.log("Scope data is %s", scope_data);
     console.log("Inside authorize function");
     // State Data from Request
     state_data = req.query.state;
@@ -71,7 +78,7 @@ app.post("/approve", (req, res) => {
 
   nosql.insert({ username: username, password: password });
 
-  return res.render("approve.html");
+  return res.render("approve.html", {scope: scope_data});
 });
 
 app.post("/authcode", (req, res) => {
@@ -110,7 +117,6 @@ app.post("/token", (req, res) => {
       access_token: access_token,
       token_type: "Bearer",
       refresh_token: refresh_token,
-      expires_in: "3600"
     };
 
     res.status(200).json(token_response);
@@ -147,6 +153,7 @@ var buildUrl = (base, options) => {
 };
 
 app.use("/", express.static("files/authorizationServer"));
+
 
 var server = app.listen(4005, "localhost", function () {
   var host = server.address().address;
