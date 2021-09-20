@@ -20,7 +20,7 @@
 
     <div class="container d-flex aligns-items-center justify-content-center" style="height:350px">
       <div class="">
-		    <h2>Approve this client?</h2>
+	<h2>Approve this client?</h2>
         <form class="form" action="/authcode" method="POST">
           <% if (scope) { %>
             <p>The client is requesting access to the following:</p>
@@ -32,7 +32,7 @@
             <% } %>
           <input type="submit" class="btn btn-warning" name="approve" value="Approve">
           <input type="submit" class="btn btn-danger" name="deny" value="Deny">
-		   </form>
+	</form>
       </div>
 
     </div><!-- /.container -->
