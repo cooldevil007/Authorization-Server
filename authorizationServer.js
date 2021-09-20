@@ -110,6 +110,7 @@ app.post("/token", (req, res) => {
       access_token: access_token,
       token_type: "Bearer",
       refresh_token: refresh_token,
+      expires_in: "3600"
     };
 
     res.status(200).json(token_response);
